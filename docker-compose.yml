@@ -1,0 +1,28 @@
+services:
+  jev-harness:
+    build: .
+    image: jev-harness:local
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      QUESTIONS_PATH: /app/examples/email_triage.questions.json
+      LEDGER_PATH: /data/ledger.jsonl
+      TYPESAFE_MODEL: ${TYPESAFE_MODEL:-jev-1.13.0}
+      TYPESAFE_API_KEY: ${TYPESAFE_API_KEY:-}
+      LLM_BASE_URL: ${LLM_BASE_URL:-https://opencode.ai/zen/go/v1}
+      LLM_MODEL: ${LLM_MODEL:-deepseek-v4.1-flash}
+      LLM_API_KEY: ${LLM_API_KEY:-}
+      ENABLE_LLM_FALLBACK: ${ENABLE_LLM_FALLBACK:-1}
+      SHADOW: ${SHADOW:-0}
+      HARNESS_TOKEN: ${HARNESS_TOKEN:-}
+    volumes:
+      - jev-data:/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8080/healthz', timeout=4).status == 200 else 1)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  jev-data:

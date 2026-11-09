@@ -1,0 +1,41 @@
+{
+  "name": "email_triage",
+  "version": 3,
+  "companion_nouls": true,
+  "primary": "category",
+  "questions": [
+    {
+      "id": "category",
+      "type": "choice",
+      "instructions": "What does the sender of `email.from` and `email.subject` want from us?",
+      "options": {
+        "customer": "Someone asking about an order, a bill or their account",
+        "lead": "Someone asking about prices, a demo or working together",
+        "vendor": "Someone selling a product or service to us",
+        "fraud": "Urgent payment request, changed bank details, spoofed sender or a login link"
+      }
+    },
+    {
+      "id": "urgency",
+      "type": "noul",
+      "instructions": "Does `email.body` describe something that is broken right now and blocking work?",
+      "criteria": "Yes means an active outage or a blocked task that cannot wait for the next working day. No means normal pace."
+    },
+    {
+      "id": "frustration",
+      "type": "score",
+      "instructions": "How frustrated is the sender, judged from `email.body` only?",
+      "levels": [
+        "Neutral or positive, no complaint about the experience",
+        "Annoyed but polite, describes wasted time",
+        "Angry, mentions cancelling, a public review or a chargeback"
+      ]
+    },
+    {
+      "id": "wants_money_back",
+      "type": "noul",
+      "instructions": "Does `email.body` ask for money back, a refund or a chargeback?",
+      "criteria": "High means yes: the sender asks for the charge to be reversed or threatens a dispute."
+    }
+  ]
+}

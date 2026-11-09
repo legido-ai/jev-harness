@@ -1,0 +1,13 @@
+{
+  "default_threshold": 0.9,
+  "review_floor": 0.5,
+  "destructive": ["refund", "approve_transfer", "delete"],
+  "destructive_threshold": 0.95,
+  "thresholds": {
+    "customer": 0.9,
+    "lead": 0.85,
+    "vendor": 0.9,
+    "fraud": 0.97,
+    "refund": 0.95
+  }
+}
