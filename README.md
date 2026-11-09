@@ -203,5 +203,6 @@ examples/         email triage with rules, policy and a question-set spec
   guessed.
 - Vendor claims are labelled as vendor claims throughout.
 
-Licence: MIT. The reference PDF is third-party material, reproduced for reference with
-attribution; it is not covered by this repository's MIT licence.
+Licence: MIT (see `LICENSE`). The reference document in `docs/reference/` is third-party
+material, reproduced for reference with attribution; it is not covered by the MIT licence -
+see `NOTICE.md`.
