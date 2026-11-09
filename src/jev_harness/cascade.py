@@ -207,7 +207,7 @@ class Cascade:
             state, questions, action,
             answers=collected,
             reasons=reasons or ["no layer could decide"],
-            meta=meta, started=started, model=None,
+            meta=meta, started=started, model=None, confidence=confidence,
         )
 
     # -- outcomes ---------------------------------------------------------
@@ -222,11 +222,14 @@ class Cascade:
         meta: dict[str, Any] | None,
         started: float,
         model: str | None,
+        confidence: float | None = None,
     ) -> Decision:
+        # The model's confidence is kept even when the decision goes to review: dropping it
+        # would leave the band analysis blind to exactly the cases it exists to study.
         decision = Decision(
             action=action or "review",
             value=None,
-            confidence=None,
+            confidence=confidence,
             threshold=self.policy.threshold_for(action or "review"),
             layer="human",
             escalated=True,

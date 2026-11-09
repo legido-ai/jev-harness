@@ -88,6 +88,13 @@ Set `HARNESS_TOKEN` to require `Authorization: Bearer <token>` on `/v1/*`
 ## Docker
 
 ```bash
+# prebuilt, multi-arch (amd64 + arm64), published by .github/workflows/docker.yml
+docker run --rm -p 8080:8080 \
+  -e QUESTIONS_PATH=/app/examples/email_triage.questions.json \
+  -e TYPESAFE_API_KEY -e LLM_API_KEY \
+  ghcr.io/legido-ai/jev-harness:0.1.0
+
+# or build it here
 docker build -t jev-harness:local .
 docker run --rm -p 8080:8080 \
   -e QUESTIONS_PATH=/app/examples/email_triage.questions.json \

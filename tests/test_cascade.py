@@ -88,6 +88,16 @@ def test_decider_failure_becomes_review_not_crash(questions):
     assert "decision model unavailable" in decision.reasons[0]
 
 
+def test_escalation_keeps_the_model_confidence_for_band_analysis(questions):
+    """A review record without the model's confidence cannot be banded afterwards."""
+    jev = FakeDecider(choice_answer("category", "customer", 0.72, fits=0.9))
+    decision = build(questions, decision_model=jev, fallback=None).decide("state")
+    assert decision.layer == "human" and decision.escalated is True
+    assert decision.confidence == 0.72
+    assert decision.may_act is False
+    assert decision.answers["category"].choice == "customer"
+
+
 def test_no_models_means_review(questions):
     decision = build(questions).decide("state")
     assert decision.layer == "human" and decision.escalated is True
