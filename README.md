@@ -48,7 +48,7 @@ confidence clears the threshold for that action.
 ```bash
 uv venv .venv && . .venv/bin/activate
 uv pip install -e ".[dev]"
-pytest -q                                  # 54 tests, no network
+pytest -q                                  # 55 tests, no network
 python examples/email_triage.py            # offline keyword stand-in
 jev-harness validate --questions examples/email_triage.questions.json
 ```
@@ -151,13 +151,20 @@ returns `None`, which is the honest answer for a young ledger.
 
 Verified on an ARM64, 2-core, CPU-only box:
 
-- **54 tests pass** (`pytest -q`), no network: cascade routing, companion-Noul blocking,
+- **CI is green**: `tests` on Python 3.10 and 3.12, and the `docker` workflow that builds
+  and pushes the image (runs 42569171299 / 42569171328, both `success`).
+- **55 tests pass** (`pytest -q`), no network: cascade routing, companion-Noul blocking,
   shadow mode, decider failure -> review, ledger join/stats, band maths, auth, spec
   round-trip, reasoning-only retry, invalid-option rejection.
 - **Live cascade run** with the chat leg on a real hosted endpoint
   (`deepseek-v4.1-flash`): rule -> stand-in -> chat model, ending with
   `layer=llm value=customer conf=0.90 act=true`. The escalation path, the hint to the
   second model and the JSON validation are exercised against a real API, not a mock.
+- **Published image**: `ghcr.io/legido-ai/jev-harness:0.1.0`
+  (digest `sha256:a91a4b17de02e9ce6d5c0736a2960e85a503c2cd547ce443a879601c502d402e`,
+  manifests for `linux/amd64` + `linux/arm64`). Pulled back anonymously, started as
+  uid 10001, `python 3.12.16`, `/healthz` -> `status: ok`, and the full
+  decide -> feedback -> stats -> bands loop exercised inside that container.
 - **The decision-model leg is wired but was not exercised end to end here**: the
   credential available to this build returns `401 authentication_error` from
   `api.typesafe.ai`. The harness treats that as a non-retryable `AuthError` and degrades

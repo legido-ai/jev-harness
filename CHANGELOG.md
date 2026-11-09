@@ -13,4 +13,4 @@ First release.
   with optional bearer auth, plus a CLI (`decide`, `serve`, `stats`, `bands`, `validate`).
 - Three deciders: TypeSafe/Jev over plain HTTP, any OpenAI-compatible chat endpoint,
   and a deterministic offline stand-in for tests and demos.
-- 54 tests, no network required.
+- 55 tests, no network required; CI on Python 3.10 and 3.12; multi-arch image published by `.github/workflows/docker.yml`.
